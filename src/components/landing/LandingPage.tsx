@@ -12,7 +12,7 @@ const LandingPage = () => {
             <div className="space-y-4">
               <h1 className="text-4xl lg:text-5xl xl:text-6xl font-bold font-inter text-foreground leading-tight">
                 Organize seus{" "}
-                <span className="bg-gradient-primary bg-clip-text text-transparent">
+                <span className="text-primary dark:text-primary-light">
                   estudos
                 </span>{" "}
                 com eficiência
@@ -24,44 +24,50 @@ const LandingPage = () => {
             </div>
 
             <div className="grid grid-cols-2 gap-4 py-6">
-              <div className="flex items-center gap-3 p-3 bg-card rounded-lg shadow-sm">
+              <div className="flex items-center gap-3 p-3 bg-card rounded-lg shadow-sm border border-border/50">
                 <div className="w-8 h-8 bg-primary/10 rounded-lg flex items-center justify-center">
                   <BookOpen className="w-4 h-4 text-primary" />
                 </div>
                 <div>
-                  <p className="font-medium text-sm">Matérias</p>
+                  <p className="font-medium text-sm text-foreground">
+                    Matérias
+                  </p>
                   <p className="text-xs text-muted-foreground">Organizadas</p>
                 </div>
               </div>
 
-              <div className="flex items-center gap-3 p-3 bg-card rounded-lg shadow-sm">
+              <div className="flex items-center gap-3 p-3 bg-card rounded-lg shadow-sm border border-border/50">
                 <div className="w-8 h-8 bg-success/10 rounded-lg flex items-center justify-center">
                   <Clock className="w-4 h-4 text-success" />
                 </div>
                 <div>
-                  <p className="font-medium text-sm">Pomodoro</p>
+                  <p className="font-medium text-sm text-foreground">
+                    Pomodoro
+                  </p>
                   <p className="text-xs text-muted-foreground">Integrado</p>
                 </div>
               </div>
 
-              <div className="flex items-center gap-3 p-3 bg-card rounded-lg shadow-sm">
+              <div className="flex items-center gap-3 p-3 bg-card rounded-lg shadow-sm border border-border/50">
                 <div className="w-8 h-8 bg-primary/10 rounded-lg flex items-center justify-center">
                   <Target className="w-4 h-4 text-primary" />
                 </div>
                 <div>
-                  <p className="font-medium text-sm">Metas</p>
+                  <p className="font-medium text-sm text-foreground">Metas</p>
                   <p className="text-xs text-muted-foreground">
                     Personalizadas
                   </p>
                 </div>
               </div>
 
-              <div className="flex items-center gap-3 p-3 bg-card rounded-lg shadow-sm">
+              <div className="flex items-center gap-3 p-3 bg-card rounded-lg shadow-sm border border-border/50">
                 <div className="w-8 h-8 bg-success/10 rounded-lg flex items-center justify-center">
                   <TrendingUp className="w-4 h-4 text-success" />
                 </div>
                 <div>
-                  <p className="font-medium text-sm">Progresso</p>
+                  <p className="font-medium text-sm text-foreground">
+                    Progresso
+                  </p>
                   <p className="text-xs text-muted-foreground">Visual</p>
                 </div>
               </div>

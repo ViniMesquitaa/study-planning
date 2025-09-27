@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Plus, X } from "lucide-react";
+import { Plus } from "lucide-react";
 import SubjectCard from "./SubjectCard";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -10,111 +10,23 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { ColorPicker } from "../../lib/ColorPicker";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-} from "@/components/ui/alert-dialog";
-
-type Topic = {
-  id: string;
-  name: string;
-  completed: boolean;
-};
-
-type Subject = {
-  id: string;
-  name: string;
-  color: string;
-  totalTopics: number;
-  completedTopics: number;
-  weeklyGoal: number;
-  currentWeekStudied: number;
-  topics: Topic[];
-};
-
-const mockSubjects: Subject[] = [
-  {
-    id: "1",
-    name: "Matemática",
-    color: "#3b82f6",
-    totalTopics: 15,
-    completedTopics: 8,
-    weeklyGoal: 8,
-    currentWeekStudied: 6.5,
-    topics: [
-      { id: "1", name: "Derivadas", completed: true },
-      { id: "2", name: "Integrais", completed: false },
-      { id: "3", name: "Limites", completed: true },
-    ],
-  },
-  {
-    id: "2",
-    name: "Física",
-    color: "#10b981",
-    totalTopics: 12,
-    completedTopics: 10,
-    weeklyGoal: 6,
-    currentWeekStudied: 7.2,
-    topics: [
-      { id: "4", name: "Leis de Newton", completed: true },
-      { id: "5", name: "Termodinâmica", completed: true },
-    ],
-  },
-  {
-    id: "3",
-    name: "Química",
-    color: "#f59e0b",
-    totalTopics: 10,
-    completedTopics: 4,
-    weeklyGoal: 5,
-    currentWeekStudied: 2.8,
-    topics: [
-      { id: "6", name: "Tabela Periódica", completed: false },
-      { id: "7", name: "Ligações Químicas", completed: true },
-    ],
-  },
-  {
-    id: "4",
-    name: "História",
-    color: "#8b5cf6",
-    totalTopics: 8,
-    completedTopics: 3,
-    weeklyGoal: 4,
-    currentWeekStudied: 1.5,
-    topics: [
-      { id: "8", name: "Segunda Guerra Mundial", completed: false },
-      { id: "9", name: "Revolução Industrial", completed: true },
-    ],
-  },
-];
+import { useSubjectsStore } from "@/store/useSubjects";
+import { SubjectForm } from "@/components/forms/SubjectForm";
+import { Breadcrumb } from "@/components/ui/breadcrumb";
+import { ConfirmationDialog } from "@/components/ui/confirmation-dialog";
+import { LoadingButton } from "@/components/ui/loading-button";
+import { BookOpen, Trash2 } from "lucide-react";
 
 const SubjectsList = () => {
-  const [subjects, setSubjects] = useState<Subject[]>(mockSubjects);
+  const { subjects, addSubject, updateSubject, deleteSubject } = useSubjectsStore();
   const [isAddSubjectOpen, setIsAddSubjectOpen] = useState(false);
-  const [isAddTopicOpen, setIsAddTopicOpen] = useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
-  const [currentSubject, setCurrentSubject] = useState<Subject | null>(null);
+  const [currentSubject, setCurrentSubject] = useState<any>(null);
   const [subjectToDelete, setSubjectToDelete] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
 
-  const [subjectName, setSubjectName] = useState("");
-  const [subjectColor, setSubjectColor] = useState("#3b82f6");
-  const [weeklyGoal, setWeeklyGoal] = useState(5);
-  const [topicName, setTopicName] = useState("");
-
-  const handleEdit = (subject: Subject) => {
+  const handleEdit = (subject: any) => {
     setCurrentSubject(subject);
-    setSubjectName(subject.name);
-    setSubjectColor(subject.color);
-    setWeeklyGoal(subject.weeklyGoal);
     setIsAddSubjectOpen(true);
   };
 
@@ -125,83 +37,41 @@ const SubjectsList = () => {
 
   const confirmDelete = () => {
     if (subjectToDelete) {
-      setSubjects(subjects.filter((subject) => subject.id !== subjectToDelete));
+      deleteSubject(subjectToDelete);
       setIsDeleteDialogOpen(false);
       setSubjectToDelete(null);
     }
   };
 
-  const handleAddTopic = (subject: Subject) => {
-    setCurrentSubject(subject);
-    setIsAddTopicOpen(true);
-  };
-
   const handleAddSubject = () => {
     setCurrentSubject(null);
-    setSubjectName("");
-    setSubjectColor("#3b82f6");
-    setWeeklyGoal(5);
     setIsAddSubjectOpen(true);
   };
 
-  const saveSubject = () => {
-    if (!subjectName.trim()) return;
-
-    if (currentSubject) {
-      const updatedSubjects = subjects.map((subject) =>
-        subject.id === currentSubject.id
-          ? {
-              ...subject,
-              name: subjectName,
-              color: subjectColor,
-              weeklyGoal: weeklyGoal,
-            }
-          : subject
-      );
-      setSubjects(updatedSubjects);
-    } else {
-      const newSubject: Subject = {
-        id: Date.now().toString(),
-        name: subjectName,
-        color: subjectColor,
-        totalTopics: 0,
-        completedTopics: 0,
-        weeklyGoal: weeklyGoal,
-        currentWeekStudied: 0,
-        topics: [],
-      };
-      setSubjects([...subjects, newSubject]);
-    }
-    setIsAddSubjectOpen(false);
-  };
-
-  const saveTopic = () => {
-    if (!topicName.trim() || !currentSubject) return;
-
-    const newTopic: Topic = {
-      id: Date.now().toString(),
-      name: topicName,
-      completed: false,
-    };
-
-    const updatedSubjects = subjects.map((subject) => {
-      if (subject.id === currentSubject.id) {
-        return {
-          ...subject,
-          topics: [...subject.topics, newTopic],
-          totalTopics: subject.totalTopics + 1,
-        };
+  const handleSubmit = async (data: any) => {
+    setIsLoading(true);
+    try {
+      if (currentSubject) {
+        updateSubject(currentSubject.id, data);
+      } else {
+        addSubject(data);
       }
-      return subject;
-    });
-
-    setSubjects(updatedSubjects);
-    setTopicName("");
-    setIsAddTopicOpen(false);
+      setIsAddSubjectOpen(false);
+    } catch (error) {
+      console.error('Erro ao salvar matéria:', error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
     <div className="space-y-6">
+      <Breadcrumb 
+        items={[
+          { label: 'Matérias', icon: <BookOpen className="h-4 w-4" /> }
+        ]} 
+      />
+      
       <div className="flex items-center justify-between">
         <div>
           <h2 className="text-2xl font-bold font-inter text-foreground">
@@ -212,10 +82,10 @@ const SubjectsList = () => {
           </p>
         </div>
 
-        <Button onClick={handleAddSubject} className="gap-2">
+        <LoadingButton onClick={handleAddSubject} className="gap-2" loading={isLoading}>
           <Plus className="w-4 h-4" />
           Nova Matéria
-        </Button>
+        </LoadingButton>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -225,7 +95,7 @@ const SubjectsList = () => {
             subject={subject}
             onEdit={() => handleEdit(subject)}
             onDelete={() => handleDelete(subject.id)}
-            onAddTopic={() => handleAddTopic(subject)}
+            onAddTopic={() => {}} // Não usado mais aqui
           />
         ))}
 
@@ -250,106 +120,34 @@ const SubjectsList = () => {
       </div>
 
       <Dialog open={isAddSubjectOpen} onOpenChange={setIsAddSubjectOpen}>
-        <DialogContent>
+        <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle>
               {currentSubject ? "Editar Matéria" : "Nova Matéria"}
             </DialogTitle>
           </DialogHeader>
-          <div className="space-y-4">
-            <div>
-              <Label htmlFor="subjectName">Nome da Matéria</Label>
-              <Input
-                id="subjectName"
-                value={subjectName}
-                onChange={(e) => setSubjectName(e.target.value)}
-                placeholder="Ex: Matemática"
-              />
-            </div>
-            <div>
-              <Label htmlFor="weeklyGoal">Meta Semanal (horas)</Label>
-              <Input
-                id="weeklyGoal"
-                type="number"
-                value={weeklyGoal}
-                onChange={(e) => setWeeklyGoal(Number(e.target.value))}
-                min="1"
-              />
-            </div>
-            <div>
-              <Label>Cor</Label>
-              <ColorPicker color={subjectColor} onChange={setSubjectColor} />
-            </div>
-            <div className="flex justify-end gap-2 pt-4">
-              <Button
-                variant="outline"
-                onClick={() => setIsAddSubjectOpen(false)}
-              >
-                Cancelar
-              </Button>
-              <Button onClick={saveSubject}>
-                {currentSubject ? "Salvar" : "Adicionar"}
-              </Button>
-            </div>
-          </div>
+          <SubjectForm
+            subject={currentSubject}
+            onSubmit={handleSubmit}
+            onCancel={() => setIsAddSubjectOpen(false)}
+            isLoading={isLoading}
+          />
         </DialogContent>
       </Dialog>
 
-      <Dialog open={isAddTopicOpen} onOpenChange={setIsAddTopicOpen}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>
-              Adicionar Tópico em {currentSubject?.name}
-            </DialogTitle>
-          </DialogHeader>
-          <div className="space-y-4">
-            <div>
-              <Label htmlFor="topicName">Nome do Tópico</Label>
-              <Input
-                id="topicName"
-                value={topicName}
-                onChange={(e) => setTopicName(e.target.value)}
-                placeholder="Ex: Derivadas"
-              />
-            </div>
-            <div className="flex justify-end gap-2 pt-4">
-              <Button
-                variant="outline"
-                onClick={() => setIsAddTopicOpen(false)}
-              >
-                Cancelar
-              </Button>
-              <Button onClick={saveTopic}>Adicionar</Button>
-            </div>
-          </div>
-        </DialogContent>
-      </Dialog>
 
-      <AlertDialog
+      <ConfirmationDialog
         open={isDeleteDialogOpen}
         onOpenChange={setIsDeleteDialogOpen}
-      >
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>
-              Tem certeza que deseja excluir esta matéria?
-            </AlertDialogTitle>
-            <AlertDialogDescription>
-              Esta ação não pode ser desfeita. Todos os tópicos associados serão
-              removidos.
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel>Cancelar</AlertDialogCancel>
-            <AlertDialogAction
-              onClick={confirmDelete}
-              className="bg-destructive hover:bg-destructive/90"
-            >
-              Excluir
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
+        onConfirm={confirmDelete}
+        title="Excluir Matéria"
+        description="Tem certeza que deseja excluir esta matéria? Esta ação não pode ser desfeita. Todos os tópicos associados serão removidos."
+        confirmText="Excluir"
+        cancelText="Cancelar"
+        variant="destructive"
+        icon={<Trash2 className="h-4 w-4" />}
+        isLoading={isLoading}
+      />
     </div>
   );
 };

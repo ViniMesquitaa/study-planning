@@ -1,12 +1,21 @@
-import { BookOpen, Clock, Target, MoreHorizontal, Edit, Trash2, Plus } from "lucide-react";
+import {
+  BookOpen,
+  Clock,
+  Target,
+  MoreHorizontal,
+  Edit,
+  Trash2,
+  Plus,
+} from "lucide-react";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { 
+import { Link } from "react-router-dom";
+import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuTrigger
+  DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
 interface Topic {
@@ -29,40 +38,58 @@ interface Subject {
 
 interface SubjectCardProps {
   subject: Subject;
-  onEdit: (subject: Subject) => void;
+  onEdit: (subject: {
+    id: string;
+    name: string;
+    color: string;
+    weeklyGoal: number;
+  }) => void;
   onDelete: (id: string) => void;
   onAddTopic: (subjectId: string) => void;
 }
 
-const SubjectCard = ({ subject, onEdit, onDelete, onAddTopic }: SubjectCardProps) => {
-  const completionPercentage = subject.totalTopics > 0 
-    ? Math.round((subject.completedTopics / subject.totalTopics) * 100) 
-    : 0;
-  
-  const weeklyProgress = subject.weeklyGoal > 0
-    ? Math.round((subject.currentWeekStudied / subject.weeklyGoal) * 100)
-    : 0;
+const SubjectCard = ({
+  subject,
+  onEdit,
+  onDelete,
+  onAddTopic,
+}: SubjectCardProps) => {
+  const completionPercentage =
+    subject.totalTopics > 0
+      ? Math.round((subject.completedTopics / subject.totalTopics) * 100)
+      : 0;
+
+  const weeklyProgress =
+    subject.weeklyGoal > 0
+      ? Math.round((subject.currentWeekStudied / subject.weeklyGoal) * 100)
+      : 0;
 
   return (
     <Card className="bg-gradient-card shadow-md hover:shadow-lg transition-all duration-300 group">
       <CardHeader className="pb-3">
         <div className="flex items-start justify-between">
           <div className="flex items-center gap-3">
-            <div 
-              className="w-3 h-8 rounded-full" 
+            <div
+              className="w-3 h-8 rounded-full"
               style={{ backgroundColor: subject.color }}
             />
             <div>
-              <h3 className="font-semibold font-inter text-foreground">{subject.name}</h3>
+              <h3 className="font-semibold font-inter text-foreground">
+                {subject.name}
+              </h3>
               <p className="text-sm text-muted-foreground">
                 {subject.completedTopics} de {subject.totalTopics} tópicos
               </p>
             </div>
           </div>
-          
+
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="icon" className="opacity-0 group-hover:opacity-100 transition-opacity">
+              <Button
+                variant="ghost"
+                size="icon"
+                className="opacity-0 group-hover:opacity-100 transition-opacity"
+              >
                 <MoreHorizontal className="w-4 h-4" />
               </Button>
             </DropdownMenuTrigger>
@@ -71,7 +98,10 @@ const SubjectCard = ({ subject, onEdit, onDelete, onAddTopic }: SubjectCardProps
                 <Edit className="w-4 h-4 mr-2" />
                 Editar
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => onDelete(subject.id)} className="text-destructive">
+              <DropdownMenuItem
+                onClick={() => onDelete(subject.id)}
+                className="text-destructive"
+              >
                 <Trash2 className="w-4 h-4 mr-2" />
                 Excluir
               </DropdownMenuItem>
@@ -79,7 +109,7 @@ const SubjectCard = ({ subject, onEdit, onDelete, onAddTopic }: SubjectCardProps
           </DropdownMenu>
         </div>
       </CardHeader>
-      
+
       <CardContent className="space-y-4">
         <div className="space-y-2">
           <div className="flex justify-between text-sm">
@@ -87,7 +117,7 @@ const SubjectCard = ({ subject, onEdit, onDelete, onAddTopic }: SubjectCardProps
             <span className="font-medium">{completionPercentage}%</span>
           </div>
           <div className="w-full bg-secondary rounded-full h-2">
-            <div 
+            <div
               className="bg-primary rounded-full h-2 transition-all duration-300"
               style={{ width: `${completionPercentage}%` }}
             />
@@ -98,12 +128,14 @@ const SubjectCard = ({ subject, onEdit, onDelete, onAddTopic }: SubjectCardProps
         <div className="space-y-2">
           <div className="flex justify-between text-sm">
             <span className="text-muted-foreground">Meta semanal</span>
-            <span className="font-medium">{subject.currentWeekStudied}h / {subject.weeklyGoal}h</span>
+            <span className="font-medium">
+              {subject.currentWeekStudied.toFixed(1)}h / {subject.weeklyGoal}h
+            </span>
           </div>
           <div className="w-full bg-secondary rounded-full h-1.5">
-            <div 
+            <div
               className={`rounded-full h-1.5 transition-all duration-300 ${
-                weeklyProgress >= 100 ? 'bg-success' : 'bg-primary'
+                weeklyProgress >= 100 ? "bg-success" : "bg-primary"
               }`}
               style={{ width: `${Math.min(weeklyProgress, 100)}%` }}
             />
@@ -123,29 +155,31 @@ const SubjectCard = ({ subject, onEdit, onDelete, onAddTopic }: SubjectCardProps
             </div>
             <div className="flex items-center gap-1">
               <Clock className="w-4 h-4" />
-              <span>{subject.currentWeekStudied}h</span>
+              <span>{subject.currentWeekStudied.toFixed(1)}h</span>
             </div>
           </div>
-          
-          <Button
-            onClick={() => onAddTopic(subject.id)}
-            variant="ghost" 
-            size="sm"
-            className="gap-1 text-primary hover:text-primary-foreground hover:bg-primary"
-          >
-            <Plus className="w-4 h-4" />
-            Tópico
-          </Button>
+
+          <div className="flex gap-2 ">
+            <Button asChild variant="default" size="sm" className="">
+              <Link to={`/subjects/${subject.id}`}>Entrar</Link>
+            </Button>
+          </div>
         </div>
 
         {/* Status Badge */}
         <div className="flex justify-end">
           {weeklyProgress >= 100 ? (
-            <Badge variant="secondary" className="bg-success-light text-success">
+            <Badge
+              variant="secondary"
+              className="bg-success-light text-success"
+            >
               Meta atingida! 🎉
             </Badge>
           ) : weeklyProgress >= 70 ? (
-            <Badge variant="secondary" className="bg-primary-light text-primary">
+            <Badge
+              variant="secondary"
+              className="bg-primary-light text-primary"
+            >
               Quase lá! 💪
             </Badge>
           ) : (

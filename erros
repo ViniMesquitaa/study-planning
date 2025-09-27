@@ -1,0 +1,28 @@
+Uncaught ReferenceError: Target is not defined
+    at PomodoroTimer (PomodoroTimer.tsx:355:18)
+
+hook.js:608 The above error occurred in the <PomodoroTimer> component:
+
+    at PomodoroTimer (http://localhost:8080/src/components/pomodoro/PomodoroTimer.tsx?t=1758987913084:34:43)
+    at div
+    at div
+    at div
+    at Dashboard (http://localhost:8080/src/components/dashboard/Dashboard.tsx?t=1758987913085:31:63)
+    at main
+    at div
+    at Index
+    at RenderedRoute (http://localhost:8080/node_modules/.vite/deps/react-router-dom.js?v=11380156:4088:5)
+    at Routes (http://localhost:8080/node_modules/.vite/deps/react-router-dom.js?v=11380156:4558:5)
+    at div
+    at Router (http://localhost:8080/node_modules/.vite/deps/react-router-dom.js?v=11380156:4501:15)
+    at BrowserRouter (http://localhost:8080/node_modules/.vite/deps/react-router-dom.js?v=11380156:5247:5)
+    at Provider (http://localhost:8080/node_modules/.vite/deps/chunk-5CKR5PZX.js?v=11380156:48:15)
+    at TooltipProvider (http://localhost:8080/node_modules/.vite/deps/@radix-ui_react-tooltip.js?v=11380156:56:5)
+    at ThemeProvider (http://localhost:8080/src/context/ThemeContext.tsx?t=1758987314098:33:33)
+    at QueryClientProvider (http://localhost:8080/node_modules/.vite/deps/@tanstack_react-query.js?v=11380156:2934:3)
+    at App
+
+Consider adding an error boundary to your tree to customize error handling behavior.
+Visit https://reactjs.org/link/error-boundaries to learn more about error boundaries.
+chunk-R6S4VRB5.js?v=11380156:9129 Uncaught ReferenceError: Target is not defined
+    at PomodoroTimer (PomodoroTimer.tsx:355:18)

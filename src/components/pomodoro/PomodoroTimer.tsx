@@ -1,10 +1,11 @@
 import { useState, useEffect, useCallback } from "react";
-import { Play, Pause, RotateCcw, Coffee, Settings } from "lucide-react";
+import { Play, Pause, RotateCcw, Coffee, Settings, BookOpen, Target } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import {
   Dialog,
   DialogContent,
@@ -12,11 +13,14 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { useSubjectsStore } from "@/store/useSubjects";
 
 type TimerMode = "work" | "break";
 type TimerStatus = "idle" | "running" | "paused";
 
 const PomodoroTimer = () => {
+  const { subjects, addStudySession } = useSubjectsStore();
+  
   // Tempos padrão (em minutos)
   const [workMinutes, setWorkMinutes] = useState(25);
   const [breakMinutes, setBreakMinutes] = useState(5);
@@ -27,6 +31,8 @@ const PomodoroTimer = () => {
   const [status, setStatus] = useState<TimerStatus>("idle");
   const [sessions, setSessions] = useState(0);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+  const [selectedSubjectId, setSelectedSubjectId] = useState<string>("");
+  const [selectedTopicId, setSelectedTopicId] = useState<string>("");
   const { toast } = useToast();
 
   // Atualiza o tempo quando os minutos são alterados
@@ -55,6 +61,17 @@ const PomodoroTimer = () => {
 
     if (newMode === "break") {
       setSessions((prev) => prev + 1);
+      
+      // Salvar sessão de estudo se uma matéria foi selecionada
+      if (selectedSubjectId && mode === "work") {
+        addStudySession({
+          subjectId: selectedSubjectId,
+          topicId: selectedTopicId && selectedTopicId !== "none" ? selectedTopicId : undefined,
+          duration: workMinutes,
+          type: 'pomodoro'
+        });
+      }
+      
       toast({
         title: "Sessão concluída! 🎉",
         description: "Hora de fazer uma pausa merecida.",
@@ -65,7 +82,7 @@ const PomodoroTimer = () => {
         description: "Vamos voltar aos estudos!",
       });
     }
-  }, [mode, workMinutes, breakMinutes, toast]);
+  }, [mode, workMinutes, breakMinutes, selectedSubjectId, selectedTopicId, addStudySession, toast]);
 
   useEffect(() => {
     let interval: NodeJS.Timeout;
@@ -103,22 +120,36 @@ const PomodoroTimer = () => {
       (mode === "work" ? workMinutes * 60 : breakMinutes * 60)) *
     100;
 
+  const selectedSubject = subjects.find(s => s.id === selectedSubjectId);
+  const availableTopics = selectedSubject?.topics || [];
+
   return (
-    <Card className="bg-gradient-card shadow-lg">
-      <CardHeader className="text-center relative">
-        <CardTitle className="flex items-center justify-center gap-2 text-lg">
-          {mode === "work" ? (
-            <>
-              <Play className="w-5 h-5 text-primary" />
-              Sessão de Estudo
-            </>
-          ) : (
-            <>
-              <Coffee className="w-5 h-5 text-success" />
-              Intervalo
-            </>
-          )}
-        </CardTitle>
+    <div className="group relative">
+      <div className="absolute inset-0 bg-gradient-to-br from-primary/20 via-success/10 to-primary/20 rounded-3xl blur-2xl group-hover:blur-3xl transition-all duration-500" />
+      <Card className="relative bg-gradient-card border border-border/50 rounded-3xl shadow-2xl hover:shadow-3xl transition-all duration-300 overflow-hidden">
+        <CardHeader className="text-center relative pb-6">
+          <div className="absolute inset-0 bg-gradient-to-b from-primary/5 to-transparent" />
+          <div className="relative">
+            <div className="flex items-center justify-center gap-3 mb-2">
+              <div className={`w-12 h-12 rounded-2xl flex items-center justify-center ${
+                mode === "work" 
+                  ? "bg-gradient-to-br from-primary to-primary/80" 
+                  : "bg-gradient-to-br from-success to-success/80"
+              }`}>
+                {mode === "work" ? (
+                  <Play className="w-6 h-6 text-primary-foreground" />
+                ) : (
+                  <Coffee className="w-6 h-6 text-success-foreground" />
+                )}
+              </div>
+              <CardTitle className="text-2xl font-bold bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-transparent">
+                {mode === "work" ? "Sessão de Estudo" : "Intervalo"}
+              </CardTitle>
+            </div>
+            <p className="text-muted-foreground">
+              {mode === "work" ? "Foque no seu objetivo" : "Relaxe e recarregue"}
+            </p>
+          </div>
         <Dialog open={isSettingsOpen} onOpenChange={setIsSettingsOpen}>
           <DialogTrigger asChild>
             <Button
@@ -182,53 +213,125 @@ const PomodoroTimer = () => {
       </CardHeader>
 
       <CardContent className="space-y-6">
-        <div className="relative flex items-center justify-center">
-          <svg className="w-32 h-32 transform -rotate-90" viewBox="0 0 100 100">
-            <circle
-              cx="50"
-              cy="50"
-              r="45"
-              fill="none"
-              stroke="hsl(var(--border))"
-              strokeWidth="8"
-            />
-            <circle
-              cx="50"
-              cy="50"
-              r="45"
-              fill="none"
-              stroke={
-                mode === "work" ? "hsl(var(--primary))" : "hsl(var(--success))"
-              }
-              strokeWidth="8"
-              strokeLinecap="round"
-              strokeDasharray={`${2 * Math.PI * 45}`}
-              strokeDashoffset={`${2 * Math.PI * 45 * (1 - progress / 100)}`}
-              className="transition-all duration-1000"
-            />
-          </svg>
-          <div className="absolute inset-0 flex items-center justify-center">
-            <span className="text-3xl font-bold font-inter">
-              {formatTime(timeLeft)}
-            </span>
+        {/* Seleção de matéria e tópico */}
+        {mode === "work" && (
+          <div className="space-y-4">
+            <div>
+              <Label htmlFor="subject-select">Matéria</Label>
+              <Select value={selectedSubjectId} onValueChange={(value) => {
+                setSelectedSubjectId(value);
+                setSelectedTopicId(""); // Reset tópico quando mudar matéria
+              }}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Selecione uma matéria" />
+                </SelectTrigger>
+                <SelectContent>
+                  {subjects.map((subject) => (
+                    <SelectItem key={subject.id} value={subject.id}>
+                      <div className="flex items-center gap-2">
+                        <div 
+                          className="w-3 h-3 rounded-full" 
+                          style={{ backgroundColor: subject.color }}
+                        />
+                        {subject.name}
+                      </div>
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+            
+            {selectedSubject && availableTopics.length > 0 && (
+              <div>
+                <Label htmlFor="topic-select">Tópico (opcional)</Label>
+                <Select value={selectedTopicId} onValueChange={setSelectedTopicId}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Selecione um tópico" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="none">Nenhum tópico específico</SelectItem>
+                    {availableTopics.map((topic) => (
+                      <SelectItem key={topic.id} value={topic.id}>
+                        {topic.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+            )}
+          </div>
+        )}
+
+        <div className="relative flex items-center justify-center my-8">
+          <div className="relative">
+            {/* Background circle */}
+            <svg className="w-40 h-40 transform -rotate-90" viewBox="0 0 100 100">
+              <circle
+                cx="50"
+                cy="50"
+                r="45"
+                fill="none"
+                stroke="hsl(var(--border))"
+                strokeWidth="6"
+                opacity="0.3"
+              />
+              {/* Progress circle */}
+              <circle
+                cx="50"
+                cy="50"
+                r="45"
+                fill="none"
+                stroke={
+                  mode === "work" ? "hsl(var(--primary))" : "hsl(var(--success))"
+                }
+                strokeWidth="6"
+                strokeLinecap="round"
+                strokeDasharray={`${2 * Math.PI * 45}`}
+                strokeDashoffset={`${2 * Math.PI * 45 * (1 - progress / 100)}`}
+                className="transition-all duration-1000 drop-shadow-lg"
+                style={{
+                  filter: `drop-shadow(0 0 8px ${
+                    mode === "work" ? "hsl(var(--primary))" : "hsl(var(--success))"
+                  })`
+                }}
+              />
+            </svg>
+            
+            {/* Time display */}
+            <div className="absolute inset-0 flex flex-col items-center justify-center">
+              <span className="text-4xl font-bold font-inter bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-transparent">
+                {formatTime(timeLeft)}
+              </span>
+              <div className="flex items-center gap-1 mt-1">
+                <div className={`w-2 h-2 rounded-full ${
+                  mode === "work" ? "bg-primary" : "bg-success"
+                }`} />
+                <span className="text-sm text-muted-foreground">
+                  {Math.round(progress)}% concluído
+                </span>
+              </div>
+            </div>
           </div>
         </div>
 
-        <div className="flex justify-center gap-3">
+        <div className="flex justify-center gap-4 mb-6">
           <Button
             onClick={handlePlayPause}
-            variant={status === "running" ? "secondary" : "default"}
             size="lg"
-            className="gap-2"
+            className={`gap-3 px-8 py-3 rounded-2xl font-semibold transition-all duration-200 hover:scale-105 ${
+              status === "running" 
+                ? "bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white shadow-lg hover:shadow-xl" 
+                : "bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 text-primary-foreground shadow-lg hover:shadow-xl"
+            }`}
           >
             {status === "running" ? (
               <>
-                <Pause className="w-4 h-4" />
+                <Pause className="w-5 h-5" />
                 Pausar
               </>
             ) : (
               <>
-                <Play className="w-4 h-4" />
+                <Play className="w-5 h-5" />
                 {status === "paused" ? "Continuar" : "Iniciar"}
               </>
             )}
@@ -238,41 +341,49 @@ const PomodoroTimer = () => {
             onClick={handleReset}
             variant="outline"
             size="lg"
-            className="gap-2"
+            className="gap-3 px-6 py-3 rounded-2xl font-semibold border-2 hover:bg-muted/50 transition-all duration-200 hover:scale-105"
           >
-            <RotateCcw className="w-4 h-4" />
+            <RotateCcw className="w-5 h-5" />
             Reset
           </Button>
         </div>
 
-        <div className="text-center space-y-1">
-          <p className="text-sm text-muted-foreground">
-            Sessões completadas hoje
-          </p>
-          <p className="text-2xl font-bold font-inter text-primary">
-            {sessions}
-          </p>
+        <div className="bg-gradient-to-r from-secondary/30 to-secondary/10 rounded-2xl p-6 mb-6">
+          <div className="text-center space-y-2">
+            <div className="flex items-center justify-center gap-2">
+              <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-primary/20 to-primary/10 flex items-center justify-center">
+                <Target className="w-4 h-4 text-primary" />
+              </div>
+              <p className="text-sm text-muted-foreground font-medium">
+                Sessões completadas hoje
+              </p>
+            </div>
+            <p className="text-3xl font-bold font-inter bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">
+              {sessions}
+            </p>
+          </div>
         </div>
 
         <Button
           onClick={switchMode}
-          variant="ghost"
-          className="w-full gap-2 text-muted-foreground hover:text-foreground"
+          variant="outline"
+          className="w-full gap-3 py-3 rounded-2xl font-semibold border-2 hover:bg-gradient-to-r hover:from-primary/10 hover:to-success/10 transition-all duration-200 hover:scale-[1.02]"
         >
           {mode === "work" ? (
             <>
-              <Coffee className="w-4 h-4" />
+              <Coffee className="w-5 h-5 text-success" />
               Mudar para intervalo
             </>
           ) : (
             <>
-              <Play className="w-4 h-4" />
+              <Play className="w-5 h-5 text-primary" />
               Mudar para estudo
             </>
           )}
         </Button>
       </CardContent>
     </Card>
+    </div>
   );
 };
 

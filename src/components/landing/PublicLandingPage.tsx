@@ -2,36 +2,23 @@ import { BookOpen, Clock, Target, TrendingUp, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import heroImage from "@/assets/hero-image.svg";
+import Header from "../layout/Header";
 
 const PublicLandingPage = () => {
   return (
     <div className="min-h-screen flex flex-col">
-      <header className="w-full py-4 border-b bg-white/80 backdrop-blur-sm sticky top-0 z-50">
-        <div className="container mx-auto flex justify-between items-center">
-          <Link to="/" className="flex items-center">
-            <img src="./logo.png" alt="" className="h-8" />
-          </Link>
-          <div className="flex items-center gap-4">
-            <Button variant="ghost" asChild>
-              <Link to="/login" className="flex items-center gap-2">
-                Fazer Login <ArrowRight className="w-4 h-4" />
-              </Link>
-            </Button>
-          </div>
-        </div>
-      </header>
-
+      <Header isPublic={true} />
       {/* Conteúdo principal */}
       <main className="flex-1">
         {/* Seção Hero */}
-        <section className="relative overflow-hidden bg-gradient-to-b from-blue-50 to-white">
+        <section className="relative overflow-hidden bg-gradient-to-b from-blue-50 to-white dark:from-gray-900 dark:to-gray-800">
           <div className="container mx-auto py-20 lg:py-28">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
               <div className="space-y-6">
                 <div className="space-y-4">
                   <h1 className="text-4xl lg:text-5xl xl:text-6xl font-bold font-inter text-foreground leading-tight">
                     Transforme sua{" "}
-                    <span className="bg-gradient-primary bg-clip-text text-transparent">
+                    <span className="text-primary dark:text-primary-light">
                       rotina de estudos
                     </span>
                   </h1>
@@ -58,7 +45,7 @@ const PublicLandingPage = () => {
                 <img
                   src={heroImage}
                   alt="StudyFlow - Organizador de estudos moderno"
-                  className="w-full h-auto animate-float"
+                  className="w-full animate-float-fade h-auto animate-float"
                 />
               </div>
             </div>
@@ -66,7 +53,7 @@ const PublicLandingPage = () => {
         </section>
 
         {/* Seção Features */}
-        <section className="py-20 bg-white">
+        <section className="py-20 bg-white dark:bg-gray-900">
           <div className="container mx-auto">
             <div className="text-center mb-16">
               <h2 className="text-3xl lg:text-4xl font-bold text-foreground">
@@ -80,11 +67,11 @@ const PublicLandingPage = () => {
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
               {/* Feature 1 */}
-              <div className="bg-card p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow">
+              <div className="bg-card p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow border border-border/50">
                 <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
                   <BookOpen className="w-6 h-6 text-primary" />
                 </div>
-                <h3 className="text-xl font-semibold mb-2">
+                <h3 className="text-xl font-semibold mb-2 text-foreground">
                   Organize Matérias
                 </h3>
                 <p className="text-muted-foreground">
@@ -94,11 +81,11 @@ const PublicLandingPage = () => {
               </div>
 
               {/* Feature 2 */}
-              <div className="bg-card p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow">
+              <div className="bg-card p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow border border-border/50">
                 <div className="w-12 h-12 bg-success/10 rounded-lg flex items-center justify-center mb-4">
                   <Clock className="w-6 h-6 text-success" />
                 </div>
-                <h3 className="text-xl font-semibold mb-2">
+                <h3 className="text-xl font-semibold mb-2 text-foreground">
                   Pomodoro Integrado
                 </h3>
                 <p className="text-muted-foreground">
@@ -107,11 +94,11 @@ const PublicLandingPage = () => {
               </div>
 
               {/* Feature 3 */}
-              <div className="bg-card p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow">
+              <div className="bg-card p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow border border-border/50">
                 <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
                   <Target className="w-6 h-6 text-primary" />
                 </div>
-                <h3 className="text-xl font-semibold mb-2">
+                <h3 className="text-xl font-semibold mb-2 text-foreground">
                   Metas Personalizadas
                 </h3>
                 <p className="text-muted-foreground">
@@ -120,11 +107,11 @@ const PublicLandingPage = () => {
               </div>
 
               {/* Feature 4 */}
-              <div className="bg-card p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow">
+              <div className="bg-card p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow border border-border/50">
                 <div className="w-12 h-12 bg-success/10 rounded-lg flex items-center justify-center mb-4">
                   <TrendingUp className="w-6 h-6 text-success" />
                 </div>
-                <h3 className="text-xl font-semibold mb-2">
+                <h3 className="text-xl font-semibold mb-2 text-foreground">
                   Acompanhe Progresso
                 </h3>
                 <p className="text-muted-foreground">
@@ -135,7 +122,8 @@ const PublicLandingPage = () => {
           </div>
         </section>
 
-        <section className="py-20 bg-gradient-to-b from-white to-blue-50">
+        {/* Seção CTA */}
+        <section className="py-20 bg-gradient-to-b from-white to-blue-50 dark:from-gray-900 dark:to-gray-800">
           <div className="container mx-auto text-center">
             <h2 className="text-3xl lg:text-4xl font-bold text-foreground mb-6">
               Pronto para transformar seus estudos?
@@ -152,44 +140,6 @@ const PublicLandingPage = () => {
           </div>
         </section>
       </main>
-
-      {/* Footer */}
-      <footer className="bg-card border-t py-8">
-        <div className="container mx-auto">
-          <div className="flex flex-col md:flex-row justify-between items-center">
-            <div className="mb-4 md:mb-0">
-              <Link to="/" className="flex items-center gap-2">
-                <span className="font-bold text-lg bg-gradient-primary bg-clip-text text-transparent">
-                  CodeLine
-                </span>
-              </Link>
-              <p className="text-sm text-muted-foreground mt-2">
-                Organize, estude, conquiste.
-              </p>
-            </div>
-            <div className="flex gap-6">
-              <Link
-                to="/terms"
-                className="text-sm text-muted-foreground hover:text-foreground"
-              >
-                Termos
-              </Link>
-              <Link
-                to="/privacy"
-                className="text-sm text-muted-foreground hover:text-foreground"
-              >
-                Privacidade
-              </Link>
-              <Link
-                to="/contact"
-                className="text-sm text-muted-foreground hover:text-foreground"
-              >
-                Contato
-              </Link>
-            </div>
-          </div>
-        </div>
-      </footer>
     </div>
   );
 };

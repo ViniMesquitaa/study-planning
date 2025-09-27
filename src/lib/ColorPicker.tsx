@@ -8,13 +8,13 @@ import {
 import { cn } from "@/lib/utils";
 
 const COLORS = [
-  "#3b82f6", // blue-500
-  "#10b981", // emerald-500
-  "#f59e0b", // amber-500
-  "#8b5cf6", // violet-500
-  "#ef4444", // red-500
-  "#ec4899", // pink-500
-  "#14b8a6", // teal-500
+  "#3a5fcd", // azul pastel escuro
+  "#2e7d63", // verde pastel escuro
+  "#b37f00", // amarelo mostarda escuro
+  "#6b4dc4", // violeta pastel escuro
+  "#b32f2f", // vermelho queimado escuro
+  "#b23b73", // rosa escuro
+  "#0f6260", // teal escuro
 ];
 
 type ColorPickerProps = {
