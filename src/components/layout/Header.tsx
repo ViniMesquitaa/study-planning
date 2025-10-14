@@ -44,44 +44,46 @@ const Header = ({ isPublic = false }: HeaderProps) => {
   return (
     <>
       {!isPublic ? (
-        // Header para usuários autenticados
-        <header className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-gray-900 dark:to-gray-800 border-b border-gray-200 dark:border-gray-700 shadow-sm relative">
-          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-3">
+        // Header para usuários autenticados - Modernizado
+        <header className="glass sticky top-0 z-50 border-b shadow-lg backdrop-blur-xl transition-smooth">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-4">
             <div className="grid grid-cols-3 items-center">
               {/* Logo */}
               <div className="flex items-center">
-                <div className="flex items-center">
-                  <Link to="/" className="flex items-center gap-3 group">
-                    <img
-                      src="./logo.png"
-                      alt="Logo"
-                      className="h-8 w-25 transition-transform duration-300 group-hover:scale-110"
-                    />
-                  </Link>
-                </div>
+                <Link to="/" className="flex items-center gap-3 group">
+                  <img
+                    src="./logo.png"
+                    alt="Logo"
+                    className="h-10 w-auto transition-all duration-300 group-hover:scale-110 drop-shadow-lg"
+                  />
+                </Link>
               </div>
 
-              {/* Navegação central - Desktop */}
+              {/* Navegação central - Desktop Modernizada */}
               {!isMobile && (
-                <nav className="flex justify-center gap-1">
+                <nav className="flex justify-center gap-2">
                   {navLinks.map((link) => (
                     <Button
                       key={link.path}
                       variant={isActive(link.path) ? "default" : "ghost"}
                       size="sm"
-                      className="gap-2 transition-all duration-200 hover:scale-105"
+                      className={`gap-2 transition-all duration-300 hover:scale-105 ${
+                        isActive(link.path)
+                          ? "bg-gradient-primary text-white shadow-lg shadow-primary/30"
+                          : "hover:bg-secondary"
+                      }`}
                       asChild
                     >
                       <Link to={link.path}>
                         <link.icon className="w-4 h-4" />
-                        <span>{link.label}</span>
+                        <span className="font-medium">{link.label}</span>
                       </Link>
                     </Button>
                   ))}
                 </nav>
               )}
 
-              {/* Ações à direita */}
+              {/* Ações à direita - Modernizadas */}
               <div className="flex justify-end items-center gap-3">
                 <ThemeToggle />
 
@@ -91,7 +93,7 @@ const Header = ({ isPublic = false }: HeaderProps) => {
                     variant="ghost"
                     size="sm"
                     onClick={toggleMobileMenu}
-                    className="relative z-50"
+                    className="relative z-50 hover:bg-secondary transition-all duration-300"
                   >
                     {isMobileMenuOpen ? (
                       <X className="w-5 h-5" />
@@ -104,65 +106,70 @@ const Header = ({ isPublic = false }: HeaderProps) => {
                   <Button
                     variant="ghost"
                     size="sm"
-                    className="gap-2 text-gray-600 dark:text-gray-300 hover:text-red-600 dark:hover:text-red-400 transition-colors duration-200"
+                    className="gap-2 text-muted-foreground hover:text-destructive hover:bg-destructive-light transition-all duration-300"
                   >
                     <LogOut className="w-4 h-4" />
-                    <span>Sair</span>
+                    <span className="font-medium">Sair</span>
                   </Button>
                 )}
               </div>
 
-              {/* Menu Mobile Overlay */}
+              {/* Menu Mobile Overlay - Modernizado */}
               {isMobile && isMobileMenuOpen && (
                 <>
-                  {/* Backdrop */}
+                  {/* Backdrop com blur */}
                   <div
-                    className="fixed inset-0 bg-black/50 z-40"
+                    className="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 animate-fade-in"
                     onClick={closeMobileMenu}
                   />
 
                   {/* Menu Mobile */}
-                  <div className="fixed top-0 right-0 h-full w-80 max-w-full bg-white dark:bg-gray-900 shadow-2xl z-50 transform transition-transform duration-300 ease-in-out">
-                    <div className="p-6">
+                  <div className="fixed top-0 right-0 h-full w-80 max-w-full card-gradient shadow-2xl z-50 animate-slide-in-right border-l-2 border-border">
+                    <div className="p-6 h-full flex flex-col">
                       {/* Cabeçalho do menu mobile */}
-                      <div className="flex items-center justify-between mb-8">
-                        <span className="text-lg font-semibold text-gray-900 dark:text-white">
+                      <div className="flex items-center justify-between mb-8 pb-4 border-b border-border">
+                        <span className="text-xl font-bold text-foreground">
                           Menu
                         </span>
                         <Button
                           variant="ghost"
                           size="sm"
                           onClick={closeMobileMenu}
+                          className="hover:bg-secondary rounded-lg"
                         >
                           <X className="w-5 h-5" />
                         </Button>
                       </div>
 
                       {/* Links de navegação */}
-                      <nav className="space-y-2">
+                      <nav className="space-y-2 flex-1">
                         {navLinks.map((link) => (
                           <Button
                             key={link.path}
                             variant={isActive(link.path) ? "default" : "ghost"}
                             size="lg"
-                            className="w-full justify-start gap-3 text-base"
+                            className={`w-full justify-start gap-3 text-base transition-all duration-300 ${
+                              isActive(link.path)
+                                ? "bg-gradient-primary text-white shadow-lg"
+                                : "hover:bg-secondary"
+                            }`}
                             asChild
                             onClick={closeMobileMenu}
                           >
                             <Link to={link.path}>
                               <link.icon className="w-5 h-5" />
-                              {link.label}
+                              <span className="font-medium">{link.label}</span>
                             </Link>
                           </Button>
                         ))}
                       </nav>
 
                       {/* Botão Sair no mobile */}
-                      <div className="absolute bottom-6 left-6 right-6">
+                      <div className="pt-4 border-t border-border">
                         <Button
                           variant="outline"
                           size="lg"
-                          className="w-full gap-3 justify-start text-red-600 dark:text-red-400 border-red-200 dark:border-red-800 hover:bg-red-50 dark:hover:bg-red-950"
+                          className="w-full gap-3 justify-start text-destructive border-destructive/30 hover:bg-destructive-light hover:border-destructive transition-all duration-300 font-semibold"
                         >
                           <LogOut className="w-5 h-5" />
                           Sair
@@ -176,9 +183,9 @@ const Header = ({ isPublic = false }: HeaderProps) => {
           </div>
         </header>
       ) : (
-        // Header público
-        <header className="w-full py-4 border-b bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm sticky top-0 z-50 shadow-lg">
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        // Header público - Modernizado
+        <header className="glass sticky top-0 z-50 border-b shadow-lg backdrop-blur-xl transition-smooth">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-4">
             <div className="grid grid-cols-3 items-center">
               {/* Logo */}
               <div className="flex items-center">
@@ -186,18 +193,15 @@ const Header = ({ isPublic = false }: HeaderProps) => {
                   <img
                     src="./logo.png"
                     alt="Logo"
-                    className="h-10 w-10 transition-transform duration-300 group-hover:scale-110"
+                    className="h-12 w-auto transition-all duration-300 group-hover:scale-110 drop-shadow-lg"
                   />
-                  <span className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-blue-400 dark:to-indigo-400 bg-clip-text text-transparent">
-                    StudyFlow
-                  </span>
                 </Link>
               </div>
 
               {/* Espaço central */}
               <div className="flex justify-center">
                 {!isMobile && (
-                  <nav className="flex gap-6 text-sm font-medium text-gray-600 dark:text-gray-300">
+                  <nav className="flex gap-6 text-sm font-semibold text-muted-foreground">
                     {/* Links públicos podem ser adicionados aqui */}
                   </nav>
                 )}
@@ -208,7 +212,7 @@ const Header = ({ isPublic = false }: HeaderProps) => {
                 <ThemeToggle />
                 <Button
                   variant="outline"
-                  className="gap-2 border-blue-200 dark:border-gray-600 text-blue-600 dark:text-white hover:bg-blue-50 dark:hover:bg-gray-800 transition-all duration-200 hover:scale-105"
+                  className="gap-2 border-primary/30 bg-primary/5 text-primary hover:bg-primary hover:text-white hover:border-primary transition-all duration-300 hover:scale-105 shadow-md font-semibold"
                   asChild
                 >
                   <Link to="/login" className="flex items-center gap-2">
@@ -234,35 +238,36 @@ const Header = ({ isPublic = false }: HeaderProps) => {
                 )}
               </div>
 
-              {/* Menu Mobile Overlay para versão pública */}
+              {/* Menu Mobile Overlay para versão pública - Modernizado */}
               {isMobile && isMobileMenuOpen && isPublic && (
                 <>
                   <div
-                    className="fixed inset-0 bg-black/50 z-40"
+                    className="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 animate-fade-in"
                     onClick={closeMobileMenu}
                   />
 
-                  <div className="fixed top-0 right-0 h-full w-80 max-w-full bg-white dark:bg-gray-900 shadow-2xl z-50 transform transition-transform duration-300 ease-in-out">
+                  <div className="fixed top-0 right-0 h-full w-80 max-w-full card-gradient shadow-2xl z-50 animate-slide-in-right border-l-2 border-border">
                     <div className="p-6">
-                      <div className="flex items-center justify-between mb-8">
-                        <span className="text-lg font-semibold text-gray-900 dark:text-white">
+                      <div className="flex items-center justify-between mb-8 pb-4 border-b border-border">
+                        <span className="text-xl font-bold text-foreground">
                           Navegação
                         </span>
                         <Button
                           variant="ghost"
                           size="sm"
                           onClick={closeMobileMenu}
+                          className="hover:bg-secondary rounded-lg"
                         >
                           <X className="w-5 h-5" />
                         </Button>
                       </div>
 
-                      {/* Links públicos mobile podem ser adicionados aqui */}
+                      {/* Links públicos mobile */}
                       <nav className="space-y-4">
                         <Button
                           variant="outline"
                           size="lg"
-                          className="w-full justify-start gap-3"
+                          className="w-full justify-start gap-3 border-primary/30 bg-primary/5 text-primary hover:bg-primary hover:text-white hover:border-primary transition-all duration-300 font-semibold"
                           asChild
                           onClick={closeMobileMenu}
                         >
