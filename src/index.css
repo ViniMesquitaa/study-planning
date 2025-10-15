@@ -78,77 +78,77 @@
     --gradient-hero: linear-gradient(135deg, hsl(214 100% 50%) 0%, hsl(258 90% 66%) 50%, hsl(199 89% 48%) 100%);
   }
 
-  /* ===== DARK THEME - Paleta Refinada ===== */
+  /* ===== DARK THEME - Paleta Refinada com Melhor Contraste ===== */
   .dark {
-    /* Backgrounds - Tons profundos e ricos */
-    --background: 222 47% 7%;
+    /* Backgrounds - Tons profundos com maior contraste */
+    --background: 222 47% 4%;
     --foreground: 210 20% 98%;
 
-    /* Cards & Surfaces - Contraste sutil */
-    --card: 222 47% 11%;
+    /* Cards & Surfaces - Contraste melhorado */
+    --card: 222 47% 13%;
     --card-foreground: 210 20% 98%;
 
     /* Popovers & Dropdowns */
-    --popover: 222 47% 11%;
+    --popover: 222 47% 13%;
     --popover-foreground: 210 20% 98%;
 
-    /* Primary - Azul brilhante mas elegante */
-    --primary: 213 94% 64%;
-    --primary-foreground: 222 47% 7%;
-    --primary-hover: 213 94% 70%;
-    --primary-light: 213 50% 25%;
+    /* Primary - Azul brilhante e acessível */
+    --primary: 213 94% 68%;
+    --primary-foreground: 222 47% 4%;
+    --primary-hover: 213 94% 74%;
+    --primary-light: 213 50% 28%;
 
-    /* Secondary - Cinza levemente azulado */
-    --secondary: 222 30% 16%;
+    /* Secondary - Cinza com melhor contraste */
+    --secondary: 222 30% 18%;
     --secondary-foreground: 210 20% 98%;
-    --secondary-hover: 222 30% 20%;
+    --secondary-hover: 222 30% 24%;
 
-    /* Muted - Tons intermediários */
-    --muted: 222 30% 14%;
-    --muted-foreground: 210 10% 70%;
+    /* Muted - Tons intermediários aprimorados */
+    --muted: 222 30% 16%;
+    --muted-foreground: 210 10% 65%;
 
     /* Accent - Roxo vibrante */
-    --accent: 258 90% 66%;
-    --accent-foreground: 222 47% 7%;
+    --accent: 258 90% 70%;
+    --accent-foreground: 222 47% 4%;
 
-    /* Success - Verde neon suave */
-    --success: 142 76% 48%;
-    --success-foreground: 222 47% 7%;
-    --success-light: 142 40% 20%;
+    /* Success - Verde neon acessível */
+    --success: 142 76% 52%;
+    --success-foreground: 222 47% 4%;
+    --success-light: 142 40% 22%;
 
-    /* Warning - Amarelo dourado */
-    --warning: 38 92% 55%;
-    --warning-foreground: 222 47% 7%;
-    --warning-light: 38 50% 20%;
+    /* Warning - Amarelo dourado mais visível */
+    --warning: 38 92% 58%;
+    --warning-foreground: 222 47% 4%;
+    --warning-light: 38 50% 22%;
 
-    /* Destructive - Vermelho coral */
-    --destructive: 0 72% 58%;
-    --destructive-foreground: 222 47% 7%;
-    --destructive-light: 0 40% 20%;
+    /* Destructive - Vermelho coral acessível */
+    --destructive: 0 72% 62%;
+    --destructive-foreground: 222 47% 4%;
+    --destructive-light: 0 40% 22%;
 
-    /* Info - Azul ciano */
-    --info: 199 89% 56%;
-    --info-foreground: 222 47% 7%;
-    --info-light: 199 50% 20%;
+    /* Info - Azul ciano vibrante */
+    --info: 199 89% 60%;
+    --info-foreground: 222 47% 4%;
+    --info-light: 199 50% 22%;
 
-    /* Borders & Inputs - Contraste adequado */
-    --border: 222 30% 22%;
-    --input: 222 30% 16%;
-    --ring: 213 94% 64%;
+    /* Borders & Inputs - Contraste mais visível */
+    --border: 222 30% 24%;
+    --input: 222 30% 18%;
+    --ring: 213 94% 68%;
 
-    /* Shadows - Mais profundas no dark */
-    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
-    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
-    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.5), 0 4px 6px -2px rgba(0, 0, 0, 0.3);
-    --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.6), 0 10px 10px -5px rgba(0, 0, 0, 0.4);
+    /* Shadows - Mais profundas e visíveis no dark */
+    --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.5);
+    --shadow-md: 0 4px 8px -1px rgba(0, 0, 0, 0.6), 0 2px 6px -1px rgba(0, 0, 0, 0.3);
+    --shadow-lg: 0 10px 20px -3px rgba(0, 0, 0, 0.7), 0 4px 8px -2px rgba(0, 0, 0, 0.4);
+    --shadow-xl: 0 20px 30px -5px rgba(0, 0, 0, 0.8), 0 10px 15px -5px rgba(0, 0, 0, 0.5);
 
-    /* Gradientes no dark - Cores vibrantes mas elegantes */
-    --gradient-primary: linear-gradient(135deg, hsl(213 94% 64%) 0%, hsl(258 90% 66%) 100%);
-    --gradient-secondary: linear-gradient(135deg, hsl(222 30% 16%) 0%, hsl(222 47% 11%) 100%);
-    --gradient-card: linear-gradient(145deg, hsl(222 47% 11%) 0%, hsl(222 47% 8%) 100%);
-    --gradient-success: linear-gradient(135deg, hsl(142 76% 48%) 0%, hsl(160 84% 45%) 100%);
-    --gradient-warning: linear-gradient(135deg, hsl(38 92% 55%) 0%, hsl(25 95% 58%) 100%);
-    --gradient-hero: linear-gradient(135deg, hsl(213 94% 64%) 0%, hsl(258 90% 66%) 50%, hsl(199 89% 56%) 100%);
+    /* Gradientes no dark - Cores vibrantes e elegantes */
+    --gradient-primary: linear-gradient(135deg, hsl(213 94% 68%) 0%, hsl(258 90% 70%) 100%);
+    --gradient-secondary: linear-gradient(135deg, hsl(222 30% 18%) 0%, hsl(222 47% 13%) 100%);
+    --gradient-card: linear-gradient(145deg, hsl(222 47% 13%) 0%, hsl(222 47% 10%) 100%);
+    --gradient-success: linear-gradient(135deg, hsl(142 76% 52%) 0%, hsl(160 84% 48%) 100%);
+    --gradient-warning: linear-gradient(135deg, hsl(38 92% 58%) 0%, hsl(25 95% 62%) 100%);
+    --gradient-hero: linear-gradient(135deg, hsl(213 94% 68%) 0%, hsl(258 90% 70%) 50%, hsl(199 89% 60%) 100%);
   }
 
   /* ===== TIPOGRAFIA ===== */

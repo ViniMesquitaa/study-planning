@@ -71,24 +71,27 @@ const Dashboard = () => {
     .filter((item) => item.minutes > 0);
 
   return (
-    <div className="space-y-8">
-      {/* Header Section - Modernizado */}
+    <div className="space-y-8 pb-12">
+      {/* Header Section - Modernizado e Profissional */}
       <div className="relative animate-fade-in">
-        <div className="absolute inset-0 bg-gradient-to-r from-primary/10 via-accent/5 to-success/10 rounded-2xl blur-2xl" />
-        <div className="relative card-gradient shadow-xl p-8 transition-smooth hover:shadow-2xl">
-          <div className="flex items-center justify-between">
-            <div className="space-y-2">
-              <h1 className="text-4xl lg:text-5xl font-bold text-foreground tracking-tight">
-                Dashboard
-              </h1>
-              <p className="text-lg text-muted-foreground">
-                Acompanhe seu progresso nos estudos
+        <div className="absolute inset-0 bg-gradient-to-r from-primary/10 via-accent/5 to-success/10 rounded-3xl blur-3xl opacity-60" />
+        <div className="relative card-gradient shadow-2xl rounded-3xl p-8 lg:p-10 transition-smooth hover:shadow-[0_20px_50px_rgba(8,_112,_184,_0.15)] border border-border/50">
+          <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+            <div className="space-y-3">
+              <div className="flex items-center gap-3">
+                <div className="w-2 h-12 bg-gradient-primary rounded-full" />
+                <h1 className="text-4xl lg:text-5xl font-bold text-foreground tracking-tight">
+                  Dashboard
+                </h1>
+              </div>
+              <p className="text-lg text-muted-foreground pl-5">
+                Acompanhe seu progresso e alcance suas metas
               </p>
             </div>
-            <div className="hidden md:flex items-center gap-6">
+            <div className="hidden md:flex items-center gap-6 bg-gradient-to-br from-primary/10 to-accent/5 rounded-2xl p-6 border border-primary/20">
               <div className="text-right space-y-1">
-                <p className="text-sm font-medium text-muted-foreground">Tempo hoje</p>
-                <p className="text-3xl font-bold bg-gradient-primary bg-clip-text text-transparent">
+                <p className="text-sm font-semibold text-muted-foreground uppercase tracking-wide">Tempo hoje</p>
+                <p className="text-3xl lg:text-4xl font-bold bg-gradient-primary bg-clip-text text-transparent">
                   {Math.round(todayStudyTime / 60)}h {Math.round(todayStudyTime % 60)}min
                 </p>
               </div>
@@ -100,97 +103,105 @@ const Dashboard = () => {
         </div>
       </div>
 
-      {/* Stats Grid - Modernizado */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 animate-slide-in-bottom">
+      {/* Stats Grid - Modernizado e Profissional */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8 animate-slide-in-bottom">
         {/* Card 1: Estudado Hoje */}
         <div className="group relative animate-scale-in">
-          <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-primary/5 rounded-2xl blur-xl group-hover:blur-2xl transition-all duration-500" />
-          <div className="relative card-gradient border-2 border-primary/20 rounded-2xl p-6 hover:border-primary/50 transition-all duration-300 hover:shadow-xl hover:shadow-primary/20 hover:-translate-y-1">
-            <div className="flex items-center justify-between mb-4">
-              <div className="w-14 h-14 rounded-xl bg-gradient-primary flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
-                <Clock className="w-7 h-7 text-white" />
+          <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-primary/5 rounded-3xl blur-2xl group-hover:blur-3xl transition-all duration-500 opacity-70" />
+          <div className="relative card-gradient border-2 border-primary/20 rounded-3xl p-6 lg:p-7 hover:border-primary/40 transition-all duration-300 hover:shadow-2xl hover:shadow-primary/20 hover:-translate-y-1.5 backdrop-blur-sm">
+            <div className="flex items-center justify-between mb-5">
+              <div className="w-16 h-16 rounded-2xl bg-gradient-primary flex items-center justify-center shadow-lg shadow-primary/30 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300">
+                <Clock className="w-8 h-8 text-white" />
               </div>
               <div className="text-right">
-                <p className="text-4xl font-bold text-foreground">
+                <p className="text-5xl font-bold text-foreground tabular-nums">
                   {Math.round(todayStudyTime)}
                 </p>
-                <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide">min</p>
+                <p className="text-xs font-bold text-muted-foreground uppercase tracking-wider mt-1">min</p>
               </div>
             </div>
-            <h3 className="font-bold text-foreground mb-1 text-lg">
-              Estudado hoje
-            </h3>
-            <p className="text-sm text-muted-foreground">
-              {Math.round(todayStudyTime / 60)}h {Math.round(todayStudyTime % 60)}min de foco
-            </p>
+            <div className="space-y-1.5">
+              <h3 className="font-bold text-foreground text-lg leading-tight">
+                Estudado hoje
+              </h3>
+              <p className="text-sm text-muted-foreground font-medium">
+                {Math.round(todayStudyTime / 60)}h {Math.round(todayStudyTime % 60)}min de foco total
+              </p>
+            </div>
           </div>
         </div>
 
         {/* Card 2: Matérias */}
         <div className="group relative animate-scale-in" style={{animationDelay: "0.1s"}}>
-          <div className="absolute inset-0 bg-gradient-to-br from-success/20 to-success/5 rounded-2xl blur-xl group-hover:blur-2xl transition-all duration-500" />
-          <div className="relative card-gradient border-2 border-success/20 rounded-2xl p-6 hover:border-success/50 transition-all duration-300 hover:shadow-xl hover:shadow-success/20 hover:-translate-y-1">
-            <div className="flex items-center justify-between mb-4">
-              <div className="w-14 h-14 rounded-xl bg-gradient-success flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
-                <BookOpen className="w-7 h-7 text-white" />
+          <div className="absolute inset-0 bg-gradient-to-br from-success/20 to-success/5 rounded-3xl blur-2xl group-hover:blur-3xl transition-all duration-500 opacity-70" />
+          <div className="relative card-gradient border-2 border-success/20 rounded-3xl p-6 lg:p-7 hover:border-success/40 transition-all duration-300 hover:shadow-2xl hover:shadow-success/20 hover:-translate-y-1.5 backdrop-blur-sm">
+            <div className="flex items-center justify-between mb-5">
+              <div className="w-16 h-16 rounded-2xl bg-gradient-success flex items-center justify-center shadow-lg shadow-success/30 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300">
+                <BookOpen className="w-8 h-8 text-white" />
               </div>
               <div className="text-right">
-                <p className="text-4xl font-bold text-foreground">
+                <p className="text-5xl font-bold text-foreground tabular-nums">
                   {activeSubjects}
                 </p>
-                <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide">ativas</p>
+                <p className="text-xs font-bold text-muted-foreground uppercase tracking-wider mt-1">ativas</p>
               </div>
             </div>
-            <h3 className="font-bold text-foreground mb-1 text-lg">Matérias</h3>
-            <p className="text-sm text-muted-foreground">
-              {totalSubjects} disciplinas cadastradas
-            </p>
+            <div className="space-y-1.5">
+              <h3 className="font-bold text-foreground text-lg leading-tight">Matérias</h3>
+              <p className="text-sm text-muted-foreground font-medium">
+                {totalSubjects} disciplinas cadastradas
+              </p>
+            </div>
           </div>
         </div>
 
         {/* Card 3: Tópicos */}
         <div className="group relative animate-scale-in" style={{animationDelay: "0.2s"}}>
-          <div className="absolute inset-0 bg-gradient-to-br from-warning/20 to-warning/5 rounded-2xl blur-xl group-hover:blur-2xl transition-all duration-500" />
-          <div className="relative card-gradient border-2 border-warning/20 rounded-2xl p-6 hover:border-warning/50 transition-all duration-300 hover:shadow-xl hover:shadow-warning/20 hover:-translate-y-1">
-            <div className="flex items-center justify-between mb-4">
-              <div className="w-14 h-14 rounded-xl bg-gradient-warning flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
-                <Target className="w-7 h-7 text-white" />
+          <div className="absolute inset-0 bg-gradient-to-br from-warning/20 to-warning/5 rounded-3xl blur-2xl group-hover:blur-3xl transition-all duration-500 opacity-70" />
+          <div className="relative card-gradient border-2 border-warning/20 rounded-3xl p-6 lg:p-7 hover:border-warning/40 transition-all duration-300 hover:shadow-2xl hover:shadow-warning/20 hover:-translate-y-1.5 backdrop-blur-sm">
+            <div className="flex items-center justify-between mb-5">
+              <div className="w-16 h-16 rounded-2xl bg-gradient-warning flex items-center justify-center shadow-lg shadow-warning/30 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300">
+                <Target className="w-8 h-8 text-white" />
               </div>
               <div className="text-right">
-                <p className="text-4xl font-bold text-foreground">
+                <p className="text-5xl font-bold text-foreground tabular-nums">
                   {completedTopics}
                 </p>
-                <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide">concluídos</p>
+                <p className="text-xs font-bold text-muted-foreground uppercase tracking-wider mt-1">concluídos</p>
               </div>
             </div>
-            <h3 className="font-bold text-foreground mb-1 text-lg">Tópicos</h3>
-            <p className="text-sm text-muted-foreground">{totalTopics} tópicos no total</p>
+            <div className="space-y-1.5">
+              <h3 className="font-bold text-foreground text-lg leading-tight">Tópicos</h3>
+              <p className="text-sm text-muted-foreground font-medium">{totalTopics} tópicos no total</p>
+            </div>
           </div>
         </div>
 
         {/* Card 4: Esta Semana */}
         <div className="group relative animate-scale-in" style={{animationDelay: "0.3s"}}>
-          <div className="absolute inset-0 bg-gradient-to-br from-accent/20 to-accent/5 rounded-2xl blur-xl group-hover:blur-2xl transition-all duration-500" />
-          <div className="relative card-gradient border-2 border-accent/20 rounded-2xl p-6 hover:border-accent/50 transition-all duration-300 hover:shadow-xl hover:shadow-accent/20 hover:-translate-y-1">
-            <div className="flex items-center justify-between mb-4">
-              <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-accent to-accent/80 flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
-                <TrendingUp className="w-7 h-7 text-white" />
+          <div className="absolute inset-0 bg-gradient-to-br from-accent/20 to-accent/5 rounded-3xl blur-2xl group-hover:blur-3xl transition-all duration-500 opacity-70" />
+          <div className="relative card-gradient border-2 border-accent/20 rounded-3xl p-6 lg:p-7 hover:border-accent/40 transition-all duration-300 hover:shadow-2xl hover:shadow-accent/20 hover:-translate-y-1.5 backdrop-blur-sm">
+            <div className="flex items-center justify-between mb-5">
+              <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-accent to-accent/80 flex items-center justify-center shadow-lg shadow-accent/30 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300">
+                <TrendingUp className="w-8 h-8 text-white" />
               </div>
               <div className="text-right">
-                <p className="text-4xl font-bold text-foreground">
+                <p className="text-5xl font-bold text-foreground tabular-nums">
                   {Math.round(weekStudyTime)}
                 </p>
-                <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide">min</p>
+                <p className="text-xs font-bold text-muted-foreground uppercase tracking-wider mt-1">min</p>
               </div>
             </div>
-            <h3 className="font-bold text-foreground mb-1 text-lg">Esta semana</h3>
-            <p className="text-sm text-muted-foreground">
-              {Math.round(weekStudyTime / 60)}h de estudo
-            </p>
+            <div className="space-y-1.5">
+              <h3 className="font-bold text-foreground text-lg leading-tight">Esta semana</h3>
+              <p className="text-sm text-muted-foreground font-medium">
+                {Math.round(weekStudyTime / 60)}h de estudo total
+              </p>
+            </div>
             <Button
               variant="ghost"
               size="icon"
-              className="absolute top-2 right-2 h-8 w-8 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-300 hover:bg-accent/20"
+              className="absolute top-3 right-3 h-9 w-9 rounded-xl opacity-0 group-hover:opacity-100 transition-all duration-300 hover:bg-accent/20 hover:scale-110"
               onClick={() => resetWeeklyProgress()}
             >
               <RotateCcw className="w-4 h-4" />
